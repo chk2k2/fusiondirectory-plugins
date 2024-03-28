@@ -48,6 +48,7 @@ class sudo extends simplePlugin
           ['serverGeneric', 'cn'],
           ['workstationGeneric', 'cn'],
           ['terminalGeneric', 'cn'],
+          ['netgroup', 'cn', '(sudoHost=%|+%oldvalue%)'],
         ],
       ],
       'plSearchAttrs' => ['description', 'sudoUser', 'sudoHost'],
@@ -98,7 +99,7 @@ class sudo extends simplePlugin
             ['ALL']
           ),
           new SudoSystemsAttribute(
-            _('Systems'), _('A host name, IP address or IP network'),
+            _('Systems'), _('A host name, Netgroup, IP address or IP network'),
             'sudoHost', FALSE,
             ['terminal', 'workstation', 'server'],
             ['ALL']
@@ -169,6 +170,8 @@ class sudo extends simplePlugin
   {
     if (($field == 'sudoUser') && (($source['CLASS'] == 'posixGroup') || ($source['CLASS'] == 'ogroup'))) {
       return parent::foreignKeyCheck($field, '%'.$fieldvalue, $source);
+    } elseif (($field == 'sudoHost') && ($source['CLASS'] == 'nisNetgroup')) {
+      return parent::foreignKeyCheck($field, '+'.$fieldvalue, $source);
     } else {
       return parent::foreignKeyCheck($field, $fieldvalue, $source);
     }
@@ -178,6 +181,8 @@ class sudo extends simplePlugin
   {
     if (($field == 'sudoUser') && (($source['CLASS'] == 'posixGroup') || ($source['CLASS'] == 'ogroup'))) {
       return parent::foreignKeyUpdate($field, '%'.$oldvalue, '%'.$newvalue, $source);
+    } elseif (($field == 'sudoHost') && ($source['CLASS'] == 'nisNetgroup')) {
+      return parent::foreignKeyUpdate($field, '+'.$oldvalue, '+'.$newvalue, $source);
     } else {
       return parent::foreignKeyUpdate($field, $oldvalue, $newvalue, $source);
     }

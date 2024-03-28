@@ -182,9 +182,10 @@ documentation and additional help.
 * Tobias Göbel
   Fixes for PHP7 compatibility
 
-* Christian Kreidl <christian.kreidl@ziti.uni-heidelberg.de>
+* Christian Kreidl <debian@chk.cksf.de>
   ppolicy improvement
   Kerberos improvement
+  sudo improvement
   
 * Martin Hamant <mh@ow2.org>
   Coded the LockUser fonction for the webservice
